@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Мой сервис по сокращению ссылок</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="form">
+        <div id="messegeResult">
+          <p> Введите ссылку требующую сокращения:</p>
+        </div>
+        <button  name="formMain" id="formMain" method="post">
+          <input id="url" type="url" name="url" required placeholder="Вставьте здесь" autocomplete="off" size="50" required/>
+          <input id="button" type="button" onclick="AjaxFormRequest('messegeResult', 'form.php')"/>Сократить</button>
+          <input id="check" type="checkbox" name="check" onchange="onCheckboxChanged(this.checked)">Ввести краткую ссылку самостоятельно:
+          <div id="visible" style="display:none;">
+            <input id="shorturl" type="text" name="shorturl" size="50">
+          </div> 
+        </form>
+        </div>
+      </div>  
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
