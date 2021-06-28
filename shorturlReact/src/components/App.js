@@ -1,5 +1,5 @@
 import UseRequest from './Request';
-import OnCheckboxChanged from './CheckBox';
+// import OnCheckboxChanged from './CheckBox';
 import {useState} from "react";
 
 function App() {
@@ -43,13 +43,13 @@ function App() {
           required />
           <input id="button" type="button"  value="Сократить" onClick={handlerSubmit}/>
           { checkRequest && <MessageFromServer /> }
-          <p className="check-n-label">
+          {/* <p className="check-n-label">
             <input id="check" type="checkbox" name="check" onChange={ OnCheckboxChanged } id="alonecheck"/> 
             <label htmlFor="alonecheck">Ввести краткую ссылку самостоятельно:</label>
           </p>
           <div id="visible">
             <input id="shorturl" type="url" name="shorturl" size="50" />
-          </div> 
+          </div>  */}
         </form>
         </div>
     </div>
