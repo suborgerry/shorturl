@@ -9,7 +9,7 @@ const UseRequest = (longURL) => {
         (async () => {
             try {
                 const urlObj = { url: longURL };
-                const res = await axios.post('http://shorturl/form.php', urlObj, {
+                const res = await axios.post('http://shorturl/server/form.php', urlObj, {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                       }
