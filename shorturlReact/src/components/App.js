@@ -12,9 +12,10 @@ function App() {
   const [error, setError] = useState('')
 
   async function handleSubmit() {
+    // const urlResponse = '/api/form.php';
     try {
       console.log(longURL);
-      const { data } = await axios.post('http://shorturl/server/form.php', {
+      const { data } = await axios.post('http://shorturl/api/form.php', {
         url: longURL
       }, {
         headers: {
