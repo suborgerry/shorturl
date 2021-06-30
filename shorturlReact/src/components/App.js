@@ -1,57 +1,51 @@
-import UseRequest from './Request';
+// import UseRequest from './Request';
 // import OnCheckboxChanged from './CheckBox';
 import {useState} from "react";
+import ShortUrlForm from "./ShortUrlForm";
+import axios from 'axios';
 
 function App() {
   const [longURL, setLongURL] = useState('');
-  const [checkRequest, setCheckRequest] = useState(null);
-  
-  function handlerSubmit() { setCheckRequest(true) };
 
-  function MessageFromServer() {
-    const { getRequest, errorRequest, isLoading } = UseRequest(longURL);
-    
-    if(isLoading) {
-      return <p>Сокращаем вашу ссылку</p>
-    } else if(getRequest) {
-      return <a href={getRequest}>{getRequest}</a>
-    } else {
-      return <p>{errorRequest}</p>
+  const [shortURL, setShortURL] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function handleSubmit() {
+    try {
+      console.log(longURL);
+      const { data } = await axios.post('http://shorturl/server/form.php', {
+        url: longURL
+      }, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+
+    if (data.url) setShortURL(data.url);
+      else if (data.error) setError(data.error);
+    } catch (error) {
+      setError('Пожалуйста, попробуйте еще раз.');
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
   function handleChange(event) {
-    setCheckRequest(false)
     setLongURL(event.target.value);
   }
 
   return (
     <div className="wrapper">
-      <div className="form">
-        <div id="messegeResult">
-          <p> Введите ссылку требующую сокращения:</p>
-        </div>
-        <form name="formMain" id="formMain" >
-          <input id="url"
-          value={longURL}
-          onChange={handleChange}
-          type="text" 
-          name="url"
-          placeholder="Вставьте здесь" 
-          autoComplete="off" 
-          size="50" 
-          required />
-          <input id="button" type="button"  value="Сократить" onClick={handlerSubmit}/>
-          { checkRequest && <MessageFromServer /> }
-          {/* <p className="check-n-label">
-            <input id="check" type="checkbox" name="check" onChange={ OnCheckboxChanged } id="alonecheck"/> 
-            <label htmlFor="alonecheck">Ввести краткую ссылку самостоятельно:</label>
-          </p>
-          <div id="visible">
-            <input id="shorturl" type="url" name="shorturl" size="50" />
-          </div>  */}
-        </form>
-        </div>
+      <ShortUrlForm value={longURL} onChange={handleChange} onSubmit={handleSubmit} />
+      {isLoading ? <div>
+        Результат загружается...
+      </div> : (
+        <>
+        {error && <div className="error">{error}</div>}
+        {shortURL && <a href={shortURL}>{shortURL}</a>}
+        </>
+      )}
     </div>
   );
 }
