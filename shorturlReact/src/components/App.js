@@ -6,26 +6,26 @@ import axios from 'axios';
 
 function App() {
   const [longURL, setLongURL] = useState('');
-
-  const [shortURL, setShortURL] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [shortURL, setShortURL] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   async function handleSubmit() {
-    // const urlResponse = '/api/form.php';
     try {
-      console.log(longURL);
-      const { data } = await axios.post('http://shorturl/api/form.php', {
-        url: longURL
-      }, {
+      const { data } = await axios.post('http://localhost:8080',
+        { 
+          url: longURL
+        }, {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          "Access-Control-Allow-Origin" : '*',
+          'Content-Type': 'application/json'
         }
       });
-
+      console.log(data);
     if (data.url) setShortURL(data.url);
       else if (data.error) setError(data.error);
     } catch (error) {
+      console.log(error);
       setError('Пожалуйста, попробуйте еще раз.');
     } finally {
       setIsLoading(false);
