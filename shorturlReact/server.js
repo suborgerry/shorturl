@@ -13,28 +13,26 @@ app.use(express.json({ extended: true }));
 app.post('/', function (req, res) {
   if(!req.body) return response.sendStatus(400);
 
-  // const mysql = require('mysql')
-  // const connection = mysql.createConnection({
-  //   host: 'localhost',
-  //   user: 'mysql',
-  //   password: 'mysql',
-  //   database: 'urldb'
-  // });
+  const randomName = Math.random().toString(36).substring(7);
 
-  console.log(req.body);
+  try {
+    const mysql = require('mysql');
+    const urldb = mysql.createConnection({
+      host: 'localhost',
+      user: 'mysql',
+      password: 'mysql',
+      database: 'urldb'
+    });
 
-  // connection.connect();
-
-  // connection.query('SELECT * FROM links', function (err, rows, fields) {
-  //   if (err) throw err
-  //   if(req.body.url.length >= 7) {
-  //     connection.query(`INSERT INTO links(url, shorturl) VALUES(${url}${rand})`)
-  //   }
-  // });
-
-  // connection.end();
-  
-  return res.json(req.body);
+    urldb.connect();
+    urldb.query('SELECT * FROM links', function (err) {
+      if (err) throw err
+        urldb.query(`INSERT INTO links(url, shorturl) VALUES("${req.body.url}", "${randomName}")`);
+        return res.json({ url: `${req.body.localUrl}${randomName}` })
+    });
+  } catch(e) {
+    console.error(e)
+  }
 });
 
 app.listen(process.env.PORT || 8080);

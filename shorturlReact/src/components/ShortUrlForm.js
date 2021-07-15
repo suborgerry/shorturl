@@ -2,7 +2,7 @@ function ShortUrlForm({value, onChange, onSubmit}) {
     return(
         <div className="form">
         <div id="messegeResult">
-            <p> Введите ссылку требующую сокращения:</p>
+            <p>Past your link for less</p>
         </div>
         <form name="formMain" id="formMain" >
             <input id="url"
@@ -10,11 +10,11 @@ function ShortUrlForm({value, onChange, onSubmit}) {
             onChange={onChange}
             type="text"
             name="url"
-            placeholder="Вставьте здесь"
+            placeholder="Your link"
             autoComplete="off"
             size="50"
             required />
-            <input id="button" type="button" value="Сократить" onClick={onSubmit} />
+            <button id="button" type="button" onClick={onSubmit} >Less</button>
             {/* <p className="check-n-label">
             <input id="check" type="checkbox" name="check" onChange={onCheckboxChanged} id="alonecheck" />
             <label htmlFor="alonecheck">Ввести краткую ссылку самостоятельно:</label>

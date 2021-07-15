@@ -8,32 +8,41 @@ function App() {
   const [longURL, setLongURL] = useState('');
   const [shortURL, setShortURL] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(false);
 
   async function handleSubmit() {
-    try {
-      const { data } = await axios.post('http://localhost:8080',
-        { 
-          url: longURL
-        }, {
-        headers: {
-          "Access-Control-Allow-Origin" : '*',
-          'Content-Type': 'application/json'
+    if(longURL !== "") {
+      if(longURL.startsWith('https://') || longURL.startsWith('http://')) {
+        try {
+          const { data } = await axios.post('http://localhost:8080',
+            { 
+              url: longURL,
+              localUrl: window.location.href
+            }, {
+            headers: {
+              "Access-Control-Allow-Origin" : '*',
+              'Content-Type': 'application/json'
+            }
+          });
+        if (data.url) setShortURL(data.url);
+          else if (data.error) setError(data.error);
+        } catch (error) {
+          console.error(error);
+          setError('Please, try again.');
+        } finally {
+          error && setError(false);
+          setIsLoading(false);
         }
-      });
-      console.log(data);
-    if (data.url) setShortURL(data.url);
-      else if (data.error) setError(data.error);
-    } catch (error) {
-      console.log(error);
-      setError('Пожалуйста, попробуйте еще раз.');
-    } finally {
-      setIsLoading(false);
+      } else {
+        setError('Link must starts with https:// or http://');
+      }
+    } else {
+      setError('Input could not be empty');
     }
   };
 
   function handleChange(event) {
-    setLongURL(event.target.value);
+      setLongURL(event.target.value);
   }
 
   return (
@@ -44,7 +53,7 @@ function App() {
       </div> : (
         <>
         {error && <div className="error">{error}</div>}
-        {shortURL && <a href={shortURL}>{shortURL}</a>}
+        {shortURL && <a href={shortURL} target="_blank" rel="noreferrer">{shortURL}</a>}
         </>
       )}
     </div>
